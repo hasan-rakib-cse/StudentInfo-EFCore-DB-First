@@ -1,0 +1,26 @@
+--Database Structure:--
+
+CREATE DATABASE StudentInfoEFCoreDBFirst;
+
+
+--Table Structure:--
+
+CREATE TABLE Students (
+    Id INT PRIMARY KEY IDENTITY (1, 1) NOT NULL,
+    Name NVARCHAR (50) NOT NULL,
+	Roll INT NOT NULL,
+    Email NVARCHAR (50) NOT NULL,
+	Gender NVARCHAR (50) NOT NULL,
+	Age INT NOT NULL,
+);
+
+
+--Insert Query:--
+
+INSERT INTO Students (Name, Roll, Email, Gender, Age)
+VALUES
+('student1', 150101, 'st1@gmail.com', 'male', 25),
+('student2', 150102, 'st2@gmail.com', 'female', 26),
+('student3', 150103, 'st3@gmail.com', 'male', 27),
+('student4', 150104, 'st4@gmail.com', 'female', 28),
+('student5', 150105, 'st5@gmail.com', 'female', 28);

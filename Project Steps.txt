@@ -1,0 +1,118 @@
+Implement ASP.NET MVC Core CRUD Operation with Entity Framework Core Using .NET 8.0 (DB First Approach) with Scaffolding:
+link: https://www.youtube.com/watch?v=N4hQYgZrWi8
+		or
+	  https://www.youtube.com/watch?v=N4hQYgZrWi8&list=PLp_RsiLZjwQQ7CxVhnM4G8i5veEClNPfX&index=43
+	  
+	  https://www.youtube.com/watch?v=Wc1XhhZkRRk
+		or
+	  https://www.youtube.com/watch?v=Wc1XhhZkRRk&list=PLp_RsiLZjwQQ7CxVhnM4G8i5veEClNPfX&index=44
+	  
+	  
+	  
+
+---------- ##### PLEASE SEE STEP-13 FIRST ##### -----------
+
+Step-1: Select ASP.NET Core Web App (Model-View-Controller) and then go as usual.
+
+
+Step-2: Go SQL Server Management Studio.
+			-- Create database
+			-- Create Table Structure
+			-- Add Data into Table (with Query/ Manually).
+			
+Step-3: Install 3 Packages (Right click on dependencies file and click Manage NuGet Packages)
+			i)  Microsoft.EntityFrameworkCore.SqlServer
+			ii) Microsoft.EntityFrameworkCore.Tools
+			i)  Microsoft.EntityFrameworkCore.Design
+
+
+Step-4: Then run 1 command in Package Manager Console (This command will generate Model Class & DbContext will automatically):
+			i)  Scaffold-DbContext "Server=DESKTOP-SC1LO7R;
+									Database=StudentInfoEFCoreDBFirst;
+									Trusted_connection=true;
+									TrustServerCertificate=True"
+									Microsoft.EntityFrameworkCore.SqlServer
+									-OutputDir Models
+
+step-5: Create a Teachers table to update database.
+			-- Add Data into Table (with Query/ Manually).
+
+Step-6: If we update our database like add new table or add new column in existing table then run the command (This
+		command will add or modify Model Class & DbContext will automatically)
+			i)	Scaffold-DbContext "Server=DESKTOP-SC1LO7R;
+									Database=StudentInfoEFCoreDBFirst;
+									Trusted_connection=true;
+									TrustServerCertificate=True"
+									Microsoft.EntityFrameworkCore.SqlServer
+									-OutputDir Models -force
+
+Step-7: Move ConnectionStrings from DbContextClass to appsettings.json file.
+		(Models er modhe 1 StudentInfoEfcoreDbfirstContext.cs class generate hobe. sekhan theke connectionstring ta appsettings.json e replace kora lagbe security er jnno.
+
+Step-8: 
+		-- Previous code of DbContext Class:
+
+			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+			#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+			=> optionsBuilder.UseSqlServer("Server=DESKTOP-SC1LO7R; Database=StudentInfoEFCoreDBFirst; Trusted_connection=true; TrustServerCertificate=True");
+
+
+		-- New Code of DbContext Class after cut the connectionstring.
+		
+			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+			{
+				if(!optionsBuilder.IsConfigured)
+				{
+				}
+			}
+			
+Step-9: Registering ConnectionString in Program.cs file. write the 3 lines in program.cs file
+	
+		var provider = builder.Services.BuildServiceProvider();
+		var config = provider.GetRequiredService<IConfiguration>();
+		builder.Services.AddDbContext<StudentInfoEfcoreDbfirstContext>(item => item.UseSqlServer(config.GetConnectionString("dbcs")));
+
+
+Step-10: For CRUD Operation, create dependency injection in Home Controller.
+
+			private readonly ILogger<HomeController> _logger; // existing
+			private readonly StudentInfoEfcoreDbfirstContext _context;
+
+			public HomeController(ILogger<HomeController> logger, StudentInfoEfcoreDbfirstContext context)
+			{
+				_logger = logger; // existing
+				_context = context;
+			}
+
+
+Step-11: delete the index.cshtml file generated for home controller's index method.
+
+Step-12: Create Controller's action method's View in a different way
+		-- first check if we add a index action method's view of Home controller,
+		then first delete the view of Views->Home->index.cshtml file.
+
+		-- right click on action method (Index)
+		-- select razor view
+		-- change View Name or keep the remain name
+		-- select Template (each template is used for erach single CRUD operations.)
+				-- Create (-- is used for creating view of Create Operation)
+				-- Delete (-- is used for creating view of Delete Operation)
+				-- Details (-- is used for creating view of Showing Details)
+				-- Edit (-- is used for creating view of Edit Operation)
+				-- Empty (Without Model)
+				-- List (-- is used for show all data)
+		-- select Model class.
+		-- select Data context class.
+		-- click add
+
+
+Step-13: Amader alada kore Controller, Action Method & Action Method er View create kora lagbe na.
+		 Amra EFCore er Scaffolding use korbo.
+
+		Er Jonno step:
+		-- Jodi Home Controller e kaj kori tahole HomeController & Views theke Home Folder delete kora lagbe.
+		-- Add New Controller
+		-- Select MVC Controller with views using Entity Framework
+		-- Select Model Class
+		-- Data context class will automatically select
+		-- In the Bottom, controller name: keep remain that.
